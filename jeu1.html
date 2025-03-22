@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu du Clic Rapide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        #clickBtn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #clickBtn:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        #startBtn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #restartBtn {
+            display: none;
+            background-color: #ff9800;
+            color: white;
+        }
+
+        #message {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu du Clic Rapide</h1>
+    <button id="startBtn">Démarrer</button>
+    <button id="clickBtn" disabled>Clique-moi !</button>
+    <p>Score : <span id="score">0</span></p>
+    <p id="timer">Temps restant : 10s</p>
+    <p id="message"></p>
+    <button id="restartBtn">Rejouer</button>
+
+    <script>
+        let score = 0;
+        let timeLeft = 10;
+        let timer;
+
+        function startGame() {
+            score = 0;
+            timeLeft = 10;
+            document.getElementById("score").innerText = score;
+            document.getElementById("timer").innerText = "Temps restant : " + timeLeft + "s";
+            document.getElementById("message").innerText = "";
+            document.getElementById("clickBtn").disabled = false;
+            document.getElementById("restartBtn").style.display = "none";
+            document.getElementById("startBtn").style.display = "none"; // Cache le bouton "Démarrer"
+
+            timer = setInterval(countdown, 1000);
+        }
+
+        document.getElementById("clickBtn").addEventListener("click", function() {
+            if (timeLeft > 0) {
+                score++;
+                document.getElementById("score").innerText = score;
+                this.style.transform = "scale(1.1)";
+                setTimeout(() => { this.style.transform = "scale(1)"; }, 100);
+            }
+        });
+
+        function countdown() {
+            document.getElementById("timer").innerText = "Temps restant : " + timeLeft + "s";
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                document.getElementById("clickBtn").disabled = true;
+                document.getElementById("message").innerText = "🎉 Temps écoulé ! Ton score : " + score;
+                document.getElementById("restartBtn").style.display = "block";
+            } else {
+                timeLeft--;
+            }
+        }
+
+        document.getElementById("startBtn").addEventListener("click", startGame);
+        document.getElementById("restartBtn").addEventListener("click", function() {
+            document.getElementById("startBtn").style.display = "block"; // Réaffiche "Démarrer"
+            document.getElementById("restartBtn").style.display = "none"; // Cache "Rejouer"
+            document.getElementById("clickBtn").disabled = true;
+            document.getElementById("message").innerText = "";
+        });
+    </script>
+</body>
+</html>

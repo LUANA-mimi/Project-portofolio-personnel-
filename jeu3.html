@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu du Carré Magique</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        #square {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        #score {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #resetBtn {
+            display: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jeu du Carré Magique</h1>
+    <p>Click sur le Carré et essaye de deviner sa prochaine trajectoire</p>
+    <div id="square"></div>
+    <p id="score">Score : <span id="clickCount">0</span></p>
+    <button id="resetBtn">Réinitialiser</button>
+
+    <script>
+        let clickCount = 0;
+
+        document.getElementById("square").addEventListener("click", function() {
+            let maxX = window.innerWidth - 120; // Empêche de sortir de l'écran
+            let maxY = window.innerHeight - 120;
+            let randomX = Math.floor(Math.random() * maxX) + "px";
+            let randomY = Math.floor(Math.random() * maxY) + "px";
+            let colors = ["red", "blue", "green", "yellow", "purple", "orange"];
+            let randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+            this.style.left = randomX;
+            this.style.top = randomY;
+            this.style.backgroundColor = randomColor;
+            this.style.transform = "scale(1.2)"; // Effet d'agrandissement rapide
+
+            setTimeout(() => {
+                this.style.transform = "scale(1)";
+            }, 200);
+
+            clickCount++;
+            document.getElementById("clickCount").innerText = clickCount;
+
+            if (clickCount >= 10) { 
+                document.getElementById("score").innerHTML = "🎉 Bravo ! Tu as atteint 10 clics !";
+                document.getElementById("resetBtn").style.display = "block";
+            }
+        });
+
+        document.getElementById("resetBtn").addEventListener("click", function() {
+            clickCount = 0;
+            document.getElementById("clickCount").innerText = clickCount;
+            document.getElementById("score").innerHTML = "Score : <span id='clickCount'>0</span>";
+            this.style.display = "none";
+        });
+    </script>
+</body>
+</html>
